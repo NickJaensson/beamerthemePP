@@ -3,7 +3,7 @@ PDF = $(TEX:.tex=.pdf)
 
 all: $(PDF)
 
-$(PDF): $(TEX)
+$(PDF): $(TEX) beamerthemePP.sty
 	pdflatex -interaction=nonstopmode $(TEX)
 	pdflatex -interaction=nonstopmode $(TEX)
 

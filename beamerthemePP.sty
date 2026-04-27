@@ -73,8 +73,13 @@
 \RequirePackage{helvet}
 % \RequirePackage[default]{lato}        % closer to TU/e branding
 % \RequirePackage[default]{sourcesanspro}
-\renewcommand{\familydefault}{\sfdefault}
 
+% \usefonttheme{professionalfonts} tells Beamer to leave math
+% symbols alone. Without it, Beamer substitutes math glyphs from the current
+% text font (Helvetica), which has no Greek letters or AMS symbols.
+\usefonttheme{professionalfonts}
+
+\setbeamerfont{normal text}{family=\sffamily}
 \setbeamerfont{frametitle}{family=\sffamily,series=\bfseries,size=\Large}
 \setbeamerfont{title}{family=\sffamily,series=\bfseries,size=\LARGE}
 \setbeamerfont{subtitle}{family=\sffamily,series=\mdseries,size=\large}
@@ -99,7 +104,7 @@
   \begin{tikzpicture}[overlay,remember picture]
     % Top-right: P&P of materials wordmark + swirl
     \node[anchor=north east,inner sep=0pt]
-      at ([xshift=-0.9cm,yshift=-0.5cm]current page.north east)
+      at ([xshift=-0.4cm,yshift=-0.5cm]current page.north east)
       {\includegraphics[height=0.95cm]{\ppmpplogo}};
 
     % Bottom-left: TU/e logo
@@ -111,15 +116,15 @@
     % The pp_logo is ~3.23cm wide (height 0.95cm * aspect 3.40) with a 0.45cm
     % right margin, so its left edge sits at xshift=-3.68cm from the east edge.
     % We end the line 1cm before that, i.e. at xshift=-4.68cm.
-    \draw[ppmblue,line width=0.55pt]
-      ([xshift=0.6cm,yshift=-1.20cm]current page.north west) --
-      ([xshift=-4.68cm,yshift=-1.20cm]current page.north east);
+    %\draw[ppmblue,line width=0.55pt]
+    %  ([xshift=0.6cm,yshift=-1.20cm]current page.north west) --
+    %  ([xshift=-4.68cm,yshift=-1.20cm]current page.north east);
 
     % Short matching accent line on the right of the logo, at the SAME height.
     % Spans the small strip between the logo's right edge and the slide edge.
-    \draw[ppmblue,line width=0.55pt]
-      ([xshift=-0.40cm,yshift=-1.20cm]current page.north east) --
-      ([xshift=-0.05cm,yshift=-1.20cm]current page.north east);
+    %\draw[ppmblue,line width=0.55pt]
+    %  ([xshift=-0.40cm,yshift=-1.20cm]current page.north east) --
+    %  ([xshift=-0.05cm,yshift=-1.20cm]current page.north east);
 
     % Slide number, bottom-right
     \node[anchor=south east,inner sep=0pt,text=ppmgray,font=\sffamily\small]
@@ -133,12 +138,16 @@
 % The title sits in the top-left band, above the accent line.
 \setbeamertemplate{frametitle}{%
   \nointerlineskip%
-  \vskip 0.05cm%
-  \begin{beamercolorbox}[wd=\dimexpr\paperwidth-5.7cm\relax,leftskip=0.0cm,ht=0.85cm,dp=0cm]{frametitle}%
-    \usebeamerfont{frametitle}\insertframetitle%
+  \vskip 0.60cm%
+  \begin{beamercolorbox}[wd=\dimexpr\paperwidth-5.7cm\relax,leftskip=0.0cm]{frametitle}%
+    \usebeamerfont{frametitle}\insertframetitle\strut%
   \end{beamercolorbox}%
-  \vspace{-1.8cm}%
+  \vspace{0.30cm}%
 }
+
+% Suppress the "(cont.)" marker that Beamer appends to titles on the second
+% and later parts of \frame[allowframebreaks] frames.
+\setbeamertemplate{frametitle continuation}{}
 
 % ----- Footline / headline ---------------------------------------------------
 % We render the logos via the background template, so leave these empty.
@@ -171,7 +180,10 @@
 }
 
 % ----- Itemize bullets: small filled square in brand blue --------------------
-\setbeamertemplate{itemize item}{\raisebox{0.20ex}{\tiny\textbf{\textcolor{ppmblue}{$\blacksquare$}}}}
+% The first-level bullet is drawn with TikZ rather than $\blacksquare$ so it
+% does not depend on amssymb being loaded
+\setbeamertemplate{itemize item}{%
+  \tikz[baseline=-0.55ex]\fill[ppmblue] (0,0) rectangle (3.2pt,3.2pt);}
 \setbeamertemplate{itemize subitem}{\raisebox{0.25ex}{\textcolor{ppmblue}{\textbullet}}}
 \setbeamertemplate{itemize subsubitem}{\raisebox{0.25ex}{\textcolor{ppmblue}{--}}}
 
