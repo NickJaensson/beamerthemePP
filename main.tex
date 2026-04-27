@@ -1,0 +1,90 @@
+% Example driver for the PP beamer theme.
+% Compile with: pdflatex main.tex
+\documentclass[aspectratio=169,11pt]{beamer}
+
+\usetheme{PP}
+
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{lmodern}
+\usepackage{booktabs}
+
+\title{Processing \& Performance of Materials}
+\subtitle{A Beamer template for the PP group}
+\author{Your Name}
+\institute{Eindhoven University of Technology}
+\date{\today}
+
+\begin{document}
+
+% --- Title slide ---
+\begin{frame}[plain]
+  \titlepage
+\end{frame}
+
+% --- Section example with bullet list ---
+\begin{frame}{Slide title}
+  Text here.
+  \begin{itemize}
+    \item First bullet point on the slide.
+    \item Second bullet, with \alert{highlighted} text.
+    \item Third bullet, with \textbf{bold} and \emph{emphasised} fragments.
+  \end{itemize}
+\end{frame}
+
+% --- Two-column layout ---
+\begin{frame}{Two-column layout}
+  \begin{columns}[T,onlytextwidth]
+    \begin{column}{0.48\textwidth}
+      \textbf{Left column}\\[0.3em]
+      Use this side for figures, sketches, or short notes.
+      \begin{itemize}
+        \item Concise.
+        \item Readable.
+      \end{itemize}
+    \end{column}
+    \begin{column}{0.48\textwidth}
+      \textbf{Right column}\\[0.3em]
+      And this side for the matching narrative or equations:
+      \[
+        \sigma_{ij} = C_{ijkl}\,\varepsilon_{kl}
+      \]
+    \end{column}
+  \end{columns}
+\end{frame}
+
+% --- Block / alert example ---
+\begin{frame}{Blocks and alerts}
+  \begin{block}{Standard block}
+    Blocks pick up the brand-blue header and a light tinted body.
+  \end{block}
+  \begin{alertblock}{Alert block}
+    Use sparingly to flag warnings or caveats.
+  \end{alertblock}
+  \begin{exampleblock}{Example block}
+    Use for worked examples or illustrative cases.
+  \end{exampleblock}
+\end{frame}
+
+% --- Table example ---
+\begin{frame}{A small table}
+  \centering
+  \begin{tabular}{lcc}
+    \toprule
+    Material & Modulus (GPa) & Density (kg/m\textsuperscript{3}) \\
+    \midrule
+    Steel    & 200 & 7\,850 \\
+    Aluminium & 70 & 2\,700 \\
+    Polymer  &   2 & 1\,200 \\
+    \bottomrule
+  \end{tabular}
+\end{frame}
+
+% --- Closing slide ---
+\begin{frame}{Thank you}
+  \centering
+  Questions?\\[1em]
+  \small \texttt{your.email@tue.nl}
+\end{frame}
+
+\end{document}

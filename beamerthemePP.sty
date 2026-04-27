@@ -1,0 +1,182 @@
+% beamerthemePP.sty
+% -----------------------------------------------------------------------------
+% Beamer theme for the TU/e "Processing & Performance of Materials" group,
+% modelled on the official PowerPoint template (pp_template.pptx).
+%
+% Layout per slide:
+%   - Top-left:   frame title (TU/e dark blue, bold sans serif)
+%   - Top-right:  P&P-of-materials logo (pp_logo.png)
+%   - Below the title: dark-blue horizontal accent line that runs across the
+%                  page, with a short matching segment to the right of the logo
+%   - Bottom-left: TU/e logo (tue_logo.png)
+%
+% Usage (inside your main .tex):
+%   \documentclass[aspectratio=169]{beamer}
+%   \usetheme{PP}
+%
+% Required image files (must sit next to this .sty or be on the graphics path):
+%   logos/pp_logo.{pdf,png}   (the "processing & performance of materials" wordmark+swirl)
+%   logostue_logo.{pdf,png}  (the red TU/e logo)
+% Vector .pdf is preferred over rasterised .png; pdflatex will pick whichever
+% it finds first along its graphics search path.
+%
+% Recommended compile: pdflatex (xelatex/lualatex also work).
+% -----------------------------------------------------------------------------
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{beamerthemePP}[2026/04/27 v1.0 PP Beamer theme (TU/e)]
+
+\mode<presentation>
+
+% ----- Required packages -----------------------------------------------------
+\RequirePackage{tikz}
+\RequirePackage{graphicx}
+\RequirePackage{calc}
+\usetikzlibrary{calc}
+
+% ----- Brand colours ---------------------------------------------------------
+% Sampled directly from the official template:
+\definecolor{ppmblue}{HTML}{0F367F}    % TU/e dark blue (titles, accents)
+\definecolor{ppmred}{HTML}{C81919}     % TU/e red (logo only)
+\definecolor{ppmgray}{HTML}{595959}    % muted text for metadata
+
+% ----- Beamer colour assignments --------------------------------------------
+\setbeamercolor{normal text}{fg=black,bg=white}
+\setbeamercolor{alerted text}{fg=ppmred}
+\setbeamercolor{example text}{fg=ppmblue!70!black}
+
+\setbeamercolor{frametitle}{fg=ppmblue,bg=white}
+\setbeamercolor{title}{fg=ppmblue,bg=white}
+\setbeamercolor{subtitle}{fg=ppmgray,bg=white}
+\setbeamercolor{author}{fg=ppmgray,bg=white}
+\setbeamercolor{date}{fg=ppmgray,bg=white}
+\setbeamercolor{institute}{fg=ppmgray,bg=white}
+
+\setbeamercolor{structure}{fg=ppmblue}
+\setbeamercolor{itemize item}{fg=ppmblue}
+\setbeamercolor{itemize subitem}{fg=ppmblue}
+\setbeamercolor{itemize subsubitem}{fg=ppmblue}
+\setbeamercolor{enumerate item}{fg=ppmblue}
+\setbeamercolor{enumerate subitem}{fg=ppmblue}
+
+\setbeamercolor{block title}{fg=white,bg=ppmblue}
+\setbeamercolor{block body}{fg=black,bg=ppmblue!8}
+\setbeamercolor{block title alerted}{fg=white,bg=ppmred}
+\setbeamercolor{block body alerted}{fg=black,bg=ppmred!8}
+
+\setbeamercolor{section in toc}{fg=ppmblue}
+\setbeamercolor{subsection in toc}{fg=black}
+
+% ----- Fonts -----------------------------------------------------------------
+% The TU/e style guide uses a humanist sans serif. Helvetica (helvet) is the
+% safest universally-available substitute; uncomment one of the alternatives
+% below if your TeX installation has it for a closer brand match.
+\RequirePackage{helvet}
+% \RequirePackage[default]{lato}        % closer to TU/e branding
+% \RequirePackage[default]{sourcesanspro}
+\renewcommand{\familydefault}{\sfdefault}
+
+\setbeamerfont{frametitle}{family=\sffamily,series=\bfseries,size=\Large}
+\setbeamerfont{title}{family=\sffamily,series=\bfseries,size=\LARGE}
+\setbeamerfont{subtitle}{family=\sffamily,series=\mdseries,size=\large}
+\setbeamerfont{author}{family=\sffamily,series=\mdseries,size=\normalsize}
+\setbeamerfont{date}{family=\sffamily,series=\mdseries,size=\small}
+\setbeamerfont{institute}{family=\sffamily,series=\mdseries,size=\small}
+\setbeamerfont{block title}{family=\sffamily,series=\bfseries}
+
+% ----- Page geometry ---------------------------------------------------------
+% Beamer with aspectratio=169 gives a 16 cm x 9 cm canvas.
+% Leave the body roomy; reserve space for header (~1.4cm) and footer (~1.0cm).
+\setbeamersize{text margin left=0.6cm,text margin right=0.6cm}
+
+% ----- Logo file names (override before \usetheme to swap) -------------------
+\providecommand{\ppmpplogo}{logos/pp_logo}
+\providecommand{\ppmtuelogo}{logos/tue_logo}
+
+% ----- Background: draws the static template elements on every slide --------
+% Using current page coordinates with overlay/remember picture so the logos
+% and accent lines sit at fixed positions independent of frame content.
+\setbeamertemplate{background}{%
+  \begin{tikzpicture}[overlay,remember picture]
+    % Top-right: P&P of materials wordmark + swirl
+    \node[anchor=north east,inner sep=0pt]
+      at ([xshift=-0.9cm,yshift=-0.5cm]current page.north east)
+      {\includegraphics[height=0.95cm]{\ppmpplogo}};
+
+    % Bottom-left: TU/e logo
+    \node[anchor=south west,inner sep=0pt]
+      at ([xshift=0.45cm,yshift=0.30cm]current page.south west)
+      {\includegraphics[height=0.62cm]{\ppmtuelogo}};
+
+    % Long accent line under the title (left side, stops ~1cm before the logo).
+    % The pp_logo is ~3.23cm wide (height 0.95cm * aspect 3.40) with a 0.45cm
+    % right margin, so its left edge sits at xshift=-3.68cm from the east edge.
+    % We end the line 1cm before that, i.e. at xshift=-4.68cm.
+    \draw[ppmblue,line width=0.55pt]
+      ([xshift=0.6cm,yshift=-1.20cm]current page.north west) --
+      ([xshift=-4.68cm,yshift=-1.20cm]current page.north east);
+
+    % Short matching accent line on the right of the logo, at the SAME height.
+    % Spans the small strip between the logo's right edge and the slide edge.
+    \draw[ppmblue,line width=0.55pt]
+      ([xshift=-0.40cm,yshift=-1.20cm]current page.north east) --
+      ([xshift=-0.05cm,yshift=-1.20cm]current page.north east);
+
+    % Slide number, bottom-right
+    \node[anchor=south east,inner sep=0pt,text=ppmgray,font=\sffamily\small]
+      at ([xshift=-0.45cm,yshift=0.45cm]current page.south east)
+      {\insertframenumber\,/\,\inserttotalframenumber};
+
+  \end{tikzpicture}%
+}
+
+% ----- Frame title -----------------------------------------------------------
+% The title sits in the top-left band, above the accent line.
+\setbeamertemplate{frametitle}{%
+  \nointerlineskip%
+  \vskip 0.05cm%
+  \begin{beamercolorbox}[wd=\dimexpr\paperwidth-5.7cm\relax,leftskip=0.0cm,ht=0.85cm,dp=0cm]{frametitle}%
+    \usebeamerfont{frametitle}\insertframetitle%
+  \end{beamercolorbox}%
+  \vspace{-1.8cm}%
+}
+
+% ----- Footline / headline ---------------------------------------------------
+% We render the logos via the background template, so leave these empty.
+\setbeamertemplate{headline}{}
+\setbeamertemplate{footline}{\vspace{0.95cm}}
+\setbeamertemplate{navigation symbols}{}
+
+% ----- Title page ------------------------------------------------------------
+\setbeamertemplate{title page}{%
+  \begin{tikzpicture}[overlay,remember picture]
+    \node[anchor=north west,text width=\paperwidth-1.4cm,inner sep=0pt,align=left]
+      at ([xshift=0.6cm,yshift=-1.9cm]current page.north west) {%
+        \usebeamerfont{title}\usebeamercolor[fg]{title}\inserttitle\par
+        \ifx\insertsubtitle\@empty\else
+          \vspace{0.35cm}%
+          {\usebeamerfont{subtitle}\usebeamercolor[fg]{subtitle}\insertsubtitle\par}%
+        \fi
+        \vspace{0.9cm}%
+        {\usebeamerfont{author}\usebeamercolor[fg]{author}\insertauthor\par}%
+        \ifx\insertinstitute\@empty\else
+          \vspace{0.15cm}%
+          {\usebeamerfont{institute}\usebeamercolor[fg]{institute}\insertinstitute\par}%
+        \fi
+        \ifx\insertdate\@empty\else
+          \vspace{0.15cm}%
+          {\usebeamerfont{date}\usebeamercolor[fg]{date}\insertdate\par}%
+        \fi
+      };
+  \end{tikzpicture}%
+}
+
+% ----- Itemize bullets: small filled square in brand blue --------------------
+\setbeamertemplate{itemize item}{\raisebox{0.20ex}{\tiny\textbf{\textcolor{ppmblue}{$\blacksquare$}}}}
+\setbeamertemplate{itemize subitem}{\raisebox{0.25ex}{\textcolor{ppmblue}{\textbullet}}}
+\setbeamertemplate{itemize subsubitem}{\raisebox{0.25ex}{\textcolor{ppmblue}{--}}}
+
+% ----- Block style: filled blue title bar, light tinted body ----------------
+\setbeamertemplate{blocks}[default]
+
+\mode<all>
+\endinput
